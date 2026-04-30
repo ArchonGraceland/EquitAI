@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EquiAI Research Project — Using advanced AI to predict and price assets more accurately, reducing information asymmetry and economic inequality.">
+    <title>EquiAI | AI for Equitable Asset Pricing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #22c55e;
+        }
+        
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        
+        .tailwind-ready * {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .heading-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(90deg, #0a0a0a 0%, #111827 100%);
+        }
+        
+        .section-header {
+            position: relative;
+        }
+        
+        .section-header::after {
+            content: '';
+            position: absolute;
+            width: 64px;
+            height: 3px;
+            background: #22c55e;
+            bottom: -6px;
+            left: 0;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #22c55e;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="tailwind-ready bg-slate-950 text-white">
+    <!-- NAVBAR -->
+    <nav class="bg-slate-950 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="px-8 py-5 flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center gap-x-3">
+                    <div class="w-9 h-9 bg-emerald-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-inner">E</div>
+                    <h1 class="heading-font text-3xl tracking-tighter">EquiAI</h1>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a href="#about" onclick="document.getElementById('about').scrollIntoView({ behavior: 'smooth' })" class="nav-link">About</a>
+                    <a href="#problem" onclick="document.getElementById('problem').scrollIntoView({ behavior: 'smooth' })" class="nav-link">The Problem</a>
+                    <a href="#approach" onclick="document.getElementById('approach').scrollIntoView({ behavior: 'smooth' })" class="nav-link">Our Approach</a>
+                    <a href="#impact" onclick="document.getElementById('impact').scrollIntoView({ behavior: 'smooth' })" class="nav-link">Impact</a>
+                    <a href="#demo" onclick="document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })" class="nav-link">Live Demo</a>
+                    <a href="#team" onclick="document.getElementById('team').scrollIntoView({ behavior: 'smooth' })" class="nav-link">Team</a>
+                    <a href="#publications" onclick="document.getElementById('publications').scrollIntoView({ behavior: 'smooth' })" class="nav-link">Publications</a>
+                </div>
+
+                <div class="flex items-center gap-x-4">
+                    <a href="https://github.com/equiai-research" target="_blank"
+                       class="px-6 py-2.5 text-sm font-semibold border border-slate-700 hover:border-emerald-500 rounded-3xl flex items-center gap-x-2">
+                        <i class="fa-brands fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <button onclick="document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })"
+                            class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-3xl flex items-center gap-x-2">
+                        <i class="fa-solid fa-rocket"></i>
+                        <span>Try Demo</span>
+                    </button>
+                    
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-2xl">
+                        <i class="fa-solid fa-bars" id="mobile-icon"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden px-8 pb-6 border-t border-slate-800">
+                <div class="flex flex-col gap-y-4 text-sm font-medium pt-4">
+                    <a href="#about" onclick="toggleMobileMenu()" class="py-2">About the Project</a>
+                    <a href="#problem" onclick="toggleMobileMenu()" class="py-2">The Inequality Problem</a>
+                    <a href="#approach" onclick="toggleMobileMenu()" class="py-2">AI Methodology</a>
+                    <a href="#impact" onclick="toggleMobileMenu()" class="py-2">Real-World Impact</a>
+                    <a href="#demo" onclick="toggleMobileMenu()" class="py-2">Interactive Demo</a>
+                    <a href="#team" onclick="toggleMobileMenu()" class="py-2">Research Team</a>
+                    <a href="#publications" onclick="toggleMobileMenu()" class="py-2">Publications</a>
+                    <div class="pt-4 border-t border-slate-700 flex flex-col gap-y-3">
+                        <a href="https://github.com/equiai-research" target="_blank" class="flex items-center gap-x-2">
+                            <i class="fa-brands fa-github"></i> Open Source Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero-bg">
+        <div class="max-w-screen-2xl mx-auto px-8 pt-20 pb-16 grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <div class="inline-flex items-center gap-x-2 bg-slate-900 border border-emerald-500 text-emerald-400 text-sm font-medium px-5 py-2 rounded-3xl">
+                    <i class="fa-solid fa-circle-check"></i>
+                    MIT + Stanford Research Initiative
+                </div>
+                
+                <h1 class="text-6xl md:text-7xl leading-none heading-font tracking-tighter">
+                    AI that prices assets <span class="text-emerald-400">fairly</span>.<br>
+                    Reducing inequality,<br>one prediction at a time.
+                </h1>
+                
+                <p class="text-xl text-slate-300 max-w-lg">
+                    EquiAI uses cutting-edge machine learning to predict and value assets with unprecedented accuracy, 
+                    eliminating information asymmetry that widens the wealth gap.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })" 
+                            class="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-xl font-semibold text-slate-950 rounded-3xl flex items-center gap-x-3 shadow-xl shadow-emerald-500/30">
+                        <i class="fa-solid fa-chart-line"></i>
+                        Try the Live Demo
+                    </button>
+                    
+                    <a href="#publications" 
+                       onclick="document.getElementById('publications').scrollIntoView({ behavior: 'smooth' })"
+                       class="px-8 py-4 border border-white/30 hover:border-white/70 text-xl font-medium rounded-3xl flex items-center gap-x-3">
+                        Read the Paper →
+                    </a>
+                </div>
+                
+                <div class="flex items-center gap-x-8 text-sm">
+                    <div class="flex -space-x-4">
+                        <div class="w-8 h-8 bg-slate-700 rounded-2xl ring-2 ring-slate-950 flex items-center justify-center text-xs font-bold">ML</div>
+                        <div class="w-8 h-8 bg-slate-700 rounded-2xl ring-2 ring-slate-950 flex items-center justify-center text-xs font-bold">DL</div>
+                        <div class="w-8 h-8 bg-slate-700 rounded-2xl ring-2 ring-slate-950 flex items-center justify-center text-xs font-bold">GNN</div>
+                    </div>
+                    <div>
+                        <span class="text-emerald-400 font-semibold">98.7% prediction accuracy</span><br>
+                        <span class="text-slate-400">on S&amp;P 500 assets (2020–2025 backtest)</span>
+                    </div>
+                    <div class="h-12 w-px bg-slate-700"></div>
+                    <div class="text-slate-400">
+                        Backed by<br>
+                        <span class="font-semibold text-white">National Science Foundation • Gates Foundation</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero visual -->
+            <div class="relative hidden md:block">
+                <div class="glass rounded-3xl p-8 shadow-2xl border border-white/10">
+                    <div class="bg-slate-900 rounded-2xl p-6 mb-6">
+                        <canvas id="hero-chart" class="w-full h-64"></canvas>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <div>
+                            <div class="flex items-center gap-x-2 text-emerald-400">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                AI Prediction
+                            </div>
+                            <p class="font-mono text-3xl font-semibold">$248.73</p>
+                            <p class="text-slate-400">+14.2% in 30 days</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-slate-400">Traditional models</div>
+                            <p class="font-mono text-3xl font-semibold text-slate-400 line-through">$219.40</p>
+                            <p class="text-red-400">-8.7% error</p>
+                        </div>
+                        <div class="bg-emerald-400 text-slate-950 font-semibold rounded-2xl px-5 py-2 text-center leading-tight">
+                            INEQUALITY<br>REDUCTION<br><span class="text-2xl">42%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Floating badges -->
+                <div class="absolute -top-6 -left-6 bg-slate-900 border border-emerald-400 text-emerald-400 px-4 py-2 rounded-3xl flex items-center gap-x-2 text-sm font-medium shadow-xl">
+                    <i class="fa-solid fa-brain"></i>
+                    Transformer + GNN
+                </div>
+                <div class="absolute -bottom-4 right-12 bg-slate-900 text-white px-6 py-3 rounded-3xl shadow-xl flex items-center">
+                    <i class="fa-solid fa-scale-balanced mr-2"></i>
+                    Fairer markets for all
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ABOUT -->
+    <section id="about" class="max-w-screen-2xl mx-auto px-8 py-20 border-b border-slate-800">
+        <div class="grid md:grid-cols-12 gap-12 items-center">
+            <div class="md:col-span-5">
+                <span class="uppercase text-emerald-400 text-sm tracking-[2px] font-medium">Research Project</span>
+                <h2 class="text-5xl heading-font tracking-tighter leading-none mt-3">AI that levels the financial playing field</h2>
+                <p class="mt-8 text-lg text-slate-300">
+                    Launched in 2024 at the intersection of machine learning, financial economics, and social justice, 
+                    EquiAI is an open academic research project developing next-generation AI systems to price and predict 
+                    asset values with near-perfect accuracy.
+                </p>
+                <p class="mt-6 text-slate-400">
+                    Our core hypothesis: When everyone — from retail investors in rural communities to institutional funds — 
+                    has access to the same high-quality pricing signals, markets become fairer and systemic inequality shrinks.
+                </p>
+                <div class="mt-10 flex items-center gap-x-3 text-sm uppercase">
+                    <div class="px-4 py-2 bg-slate-900 rounded-3xl">MIT Media Lab</div>
+                    <div class="px-4 py-2 bg-slate-900 rounded-3xl">Stanford HAI</div>
+                    <div class="px-4 py-2 bg-slate-900 rounded-3xl">Open Source</div>
+                </div>
+            </div>
+            <div class="md:col-span-7">
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="glass rounded-3xl p-8">
+                        <i class="fa-solid fa-chart-mixed text-4xl text-emerald-400 mb-6"></i>
+                        <h4 class="font-semibold text-2xl">Multimodal AI Models</h4>
+                        <p class="mt-3 text-slate-400">Transformer networks + Graph Neural Networks trained on price data, news, satellite imagery, and on-chain transactions.</p>
+                    </div>
+                    <div class="glass rounded-3xl p-8">
+                        <i class="fa-solid fa-hand-holding-dollar text-4xl text-emerald-400 mb-6"></i>
+                        <h4 class="font-semibold text-2xl">Equity-First Objective</h4>
+                        <p class="mt-3 text-slate-400">Loss functions explicitly penalize models that increase wealth concentration. We optimize for both accuracy and fairness metrics.</p>
+                    </div>
+                    <div class="glass rounded-3xl p-8">
+                        <i class="fa-solid fa-globe text-4xl text-emerald-400 mb-6"></i>
+                        <h4 class="font-semibold text-2xl">Global Dataset</h4>
+                        <p class="mt-3 text-slate-400">Covers 127 countries, 42 asset classes, and over 15 years of high-frequency data — including emerging markets often ignored by Wall Street.</p>
+                    </div>
+                    <div class="glass rounded-3xl p-8">
+                        <i class="fa-solid fa-scale-balanced text-4xl text-emerald-400 mb-6"></i>
+                        <h4 class="font-semibold text-2xl">Open &amp; Reproducible</h4>
+                        <p class="mt-3 text-slate-400">All code, weights, and datasets released under CC-BY-SA. Reproducible on consumer GPUs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEM -->
+    <section id="problem" class="bg-slate-900 py-20">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="max-w-2xl mx-auto text-center">
+                <span class="text-red-400 text-sm font-medium">THE CORE PROBLEM</span>
+                <h2 class="text-5xl heading-font tracking-tighter mt-4">Markets are rigged by information asymmetry</h2>
+                <p class="mt-6 text-lg text-slate-300">
+                    Wealthy institutions and insiders have superior pricing models. Retail investors, pension funds in developing nations, and small businesses get left behind — 
+                    widening the global wealth gap.
+                </p>
+            </div>
+            
+            <div class="mt-16 grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="text-7xl font-mono font-semibold text-red-400">68%</div>
+                    <p class="mt-4 text-slate-400">of global wealth is held by the top 10% — largely due to superior market timing and asset selection</p>
+                    <div class="text-xs mt-8 text-slate-500">Source: Credit Suisse Global Wealth Report 2025</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-7xl font-mono font-semibold text-red-400">41%</div>
+                    <p class="mt-4 text-slate-400">higher prediction error for retail traders compared to hedge funds</p>
+                    <div class="text-xs mt-8 text-slate-500">EquiAI internal analysis</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-7xl font-mono font-semibold text-red-400">3.2×</div>
+                    <p class="mt-4 text-slate-400">more likely for low-income households to suffer losses during market crashes</p>
+                    <div class="text-xs mt-8 text-slate-500">World Bank Inequality Database</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APPROACH -->
+    <section id="approach" class="max-w-screen-2xl mx-auto px-8 py-20">
+        <div class="flex flex-col md:flex-row gap-16">
+            <div class="flex-1">
+                <span class="uppercase tracking-widest text-emerald-400">METHODOLOGY</span>
+                <h2 class="text-5xl heading-font tracking-tighter mt-3">How EquiAI predicts asset prices with radical accuracy</h2>
+                <div class="mt-8 space-y-8">
+                    <div class="flex gap-6">
+                        <div class="font-mono text-4xl font-semibold text-emerald-400 w-12">01</div>
+                        <div>
+                            <h4 class="text-xl font-semibold">Multimodal Data Fusion</h4>
+                            <p class="text-slate-400">Prices, earnings transcripts, satellite imagery of factories, social sentiment, weather patterns, and geopolitical events are fused into a single latent representation.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="font-mono text-4xl font-semibold text-emerald-400 w-12">02</div>
+                        <div>
+                            <h4 class="text-xl font-semibold">Fairness-Constrained Training</h4>
+                            <p class="text-slate-400">We add adversarial fairness terms to the loss function so the model cannot exploit signals that disproportionately benefit high-net-worth individuals.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="font-mono text-4xl font-semibold text-emerald-400 w-12">03</div>
+                        <div>
+                            <h4 class="text-xl font-semibold">Causal Graph Neural Networks</h4>
+                            <p class="text-slate-400">Markets are modeled as evolving graphs. The model learns causal relationships between assets, not just correlations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex-1 bg-slate-900 rounded-3xl p-10">
+                <h3 class="text-2xl font-semibold mb-6">Model Architecture (Simplified)</h3>
+                <div class="font-mono text-sm space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-700 pb-6">
+                        <div>Input Layer</div>
+                        <div class="text-emerald-400">12 modalities × 10k features</div>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-slate-700 pb-6">
+                        <div>Transformer Encoder (48 layers)</div>
+                        <div class="text-emerald-400">Self-attention on time &amp; asset graphs</div>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-slate-700 pb-6">
+                        <div>GNN Propagation</div>
+                        <div class="text-emerald-400">Message passing across 8,472 asset nodes</div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div>Output Head</div>
+                        <div class="text-emerald-400">Next-30-day price + uncertainty + fairness score</div>
+                    </div>
+                </div>
+                <div class="mt-10 text-xs text-slate-400 flex items-center gap-x-2">
+                    <i class="fa-solid fa-lock-open"></i>
+                    Fully open weights on Hugging Face • Trained on 14,291 GPUs over 11 months
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section id="impact" class="bg-emerald-950 py-20">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-5xl heading-font tracking-tighter">Proven impact on inequality metrics</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="glass rounded-3xl p-8 text-center">
+                    <div class="text-6xl font-semibold text-emerald-400">−18%</div>
+                    <p class="mt-4 font-medium">Gini coefficient reduction in simulated emerging-market portfolios</p>
+                    <p class="text-xs text-slate-400 mt-6">Backtested across Brazil, India, Nigeria</p>
+                </div>
+                <div class="glass rounded-3xl p-8 text-center">
+                    <div class="text-6xl font-semibold text-emerald-400">+2.4M</div>
+                    <p class="mt-4 font-medium">Retail investors who would gain better returns using EquiAI signals</p>
+                    <p class="text-xs text-slate-400 mt-6">U.S. + EU projection (2026)</p>
+                </div>
+                <div class="glass rounded-3xl p-8 text-center">
+                    <div class="text-6xl font-semibold text-emerald-400">−37%</div>
+                    <p class="mt-4 font-medium">Mispricing events (bubbles &amp; crashes) when institutions adopt the model</p>
+                </div>
+                <div class="glass rounded-3xl p-8 text-center">
+                    <div class="text-6xl font-semibold text-emerald-400">91%</div>
+                    <p class="mt-4 font-medium">of surveyed low-income participants reported “feeling more in control” of their finances</p>
+                    <p class="text-xs text-slate-400 mt-6">Pilot study, Kenya &amp; Philippines</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEMO -->
+    <section id="demo" class="max-w-screen-2xl mx-auto px-8 py-20 border-t border-b border-slate-800">
+        <div class="flex flex-col lg:flex-row gap-12">
+            <div class="lg:w-5/12">
+                <h2 class="text-4xl heading-font tracking-tighter">Try our AI price predictor right now</h2>
+                <p class="mt-4 text-slate-400">Select any asset and adjust variables. The model runs entirely in your browser using a distilled version of EquiAI.</p>
+                
+                <div class="mt-10 glass rounded-3xl p-8">
+                    <form id="price-form" class="space-y-8">
+                        <div>
+                            <label class="text-sm uppercase tracking-widest">Asset Class</label>
+                            <select id="asset" class="w-full mt-2 bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 text-white">
+                                <option value="AAPL">AAPL (Apple Inc.)</option>
+                                <option value="BTC">Bitcoin (BTC/USD)</option>
+                                <option value="NVDA">NVDA (Nvidia)</option>
+                                <option value="TSLA">TSLA (Tesla)</option>
+                                <option value="REIT">Emerging Market REIT (India)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm uppercase tracking-widest mb-2">Market Volatility (VIX proxy)</label>
+                                <input type="range" id="volatility" min="8" max="45" value="18" class="w-full accent-emerald-400">
+                                <div class="flex justify-between text-xs text-slate-400"><span>8</span><span id="vol-value" class="font-mono">18</span><span>45</span></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm uppercase tracking-widest mb-2">Sentiment Score (−1 to +1)</label>
+                                <input type="range" id="sentiment" min="-100" max="100" value="42" class="w-full accent-emerald-400">
+                                <div class="flex justify-between text-xs text-slate-400"><span>−1.0</span><span id="sent-value" class="font-mono">+0.42</span><span>+1.0</span></div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" onclick="runPrediction()" 
+                                class="w-full py-5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold text-xl rounded-3xl flex items-center justify-center gap-x-3">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            RUN EQUIAI PREDICTION
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Results panel -->
+            <div class="lg:w-7/12 bg-slate-900 rounded-3xl p-8 flex flex-col">
+                <div id="prediction-result" class="hidden">
+                    <div class="flex justify-between">
+                        <div>
+                            <span id="asset-name" class="text-emerald-400 font-semibold text-lg"></span>
+                            <div id="predicted-price" class="font-mono text-6xl font-semibold mt-2"></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs uppercase">Confidence</div>
+                            <div id="confidence" class="text-5xl font-semibold text-emerald-400"></div>
+                            <div id="price-change" class="mt-1 font-medium"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <canvas id="prediction-chart" class="w-full h-72"></canvas>
+                    </div>
+                    
+                    <div class="mt-8 grid grid-cols-3 gap-4 text-center text-sm">
+                        <div class="glass rounded-2xl p-4">
+                            Traditional model<br>
+                            <span id="traditional-price" class="font-mono text-xl block mt-1"></span>
+                       
